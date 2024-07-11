@@ -13,15 +13,26 @@ struct ContentView: View {
     
     
     var body: some View {
-        VStack {
-            Text("🫠")
-                .font(.largeTitle)
+        HStack {
+            CardView()
+            CardView()
         }
         .padding()
         .foregroundColor(Color.green)
     }
 }
 
+
+struct CardView: View {
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: 20)
+                .strokeBorder(lineWidth: 10)
+            Text("🫠").font(.largeTitle)
+        }
+    }
+}
 
 
 
