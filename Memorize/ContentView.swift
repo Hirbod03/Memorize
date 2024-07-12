@@ -8,25 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    var i: Int = 5
-    var s: String = "Hirbod"
-    
-    
     var body: some View {
         HStack {
             CardView()
-            CardView()
+            CardView(isHollow: false)
         }
         .padding()
-        .foregroundColor(Color.green)
+        .foregroundColor(.blue)
     }
+    
 }
 
 
 struct CardView: View {
+    var isHollow: Bool = true
+    
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 20)
+            if isHollow {
+                RoundedRectangle(cornerRadius: 20).foregroundColor(.white)
+            }
+            else {
+                RoundedRectangle(cornerRadius: 20)
+            }
             RoundedRectangle(cornerRadius: 20)
                 .strokeBorder(lineWidth: 10)
             Text("🫠").font(.largeTitle)
