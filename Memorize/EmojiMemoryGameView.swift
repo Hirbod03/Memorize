@@ -12,9 +12,9 @@ struct EmojiMemoryGameView: View {
         
     var body: some View {
         VStack {
-            title
             ScrollView{
                 cards
+                    .animation(.default, value: viewModel.cards)
             }
             buttons
         }
@@ -29,10 +29,13 @@ struct EmojiMemoryGameView: View {
     
     var cards: some View{
         LazyVGrid(columns:[GridItem(.adaptive(minimum: 85), spacing: 0)]) {
-            ForEach(viewModel.cards.indices, id: \.self){ index in
-                CardView(viewModel.cards[index])
+            ForEach(viewModel.cards){ card in
+                CardView(card)
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
+                    .onTapGesture {
+                        viewModel.choose(card)
+                    }
             }
         }
         .foregroundColor(.indigo)
@@ -43,40 +46,11 @@ struct EmojiMemoryGameView: View {
             Button("Shuffle") {
                 viewModel.shuffle()
             }
-            //themeSelectButton(by: 1, symbol: "dog", text: "Animals")
-            //Spacer()
-            //themeSelectButton(by: 2, symbol: "soccerball", text: "Sports")
-            //Spacer()
-            //themeSelectButton(by: 3, symbol: "carrot", text: "Fruits")
+            .foregroundColor(.blue)
+            .imageScale(.large)
+            .font(.title)
         }
-        .foregroundColor(.blue)
-        .imageScale(.large)
-        .font(.title)
     }
-    
-    
-    
-//    func themeSelectButton(by choice: Int, symbol: String, text: String) -> some View{
-//         VStack{
-//             Button(action: {
-//                 if choice == 1 {
-//                     theme = ["🦉", "🐠", "🐬","🐕","🦉", "🐠", "🐬","🐕"].shuffled()
-//                     cardCount = 8
-//                 }
-//                 else if choice == 2 {
-//                     theme = ["⚽️", "🏈", "🏀","🥎","⚾️","⚽️", "🏈", "🏀","🥎","⚾️"].shuffled()
-//                     cardCount = 10
-//                 }
-//                 else if choice == 3{
-//                     theme = ["🍎", "🍐", "🍌","🍉","🥝","🥥","🍓", "🍎", "🍐", "🍌","🍉","🥝","🥥","🍓"].shuffled()
-//                     cardCount = 14
-//                 }
-//             }, label: {
-//                 Image(systemName: symbol)
-//             })
-//             Text(text).font(.subheadline)
-//         }
-//    }
 }
 
 
