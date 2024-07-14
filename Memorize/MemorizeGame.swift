@@ -20,19 +20,44 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
         }
     }
     
-    mutating func choose(_ card: Card) {
-        let chosenIndex = index(of: card)
-        cards[chosenIndex].isFaceUp.toggle()
-        print("chose \(card)")
-    }
-    
-    func index(of card: Card) -> Int{
-        for index in cards.indices {
-            if cards[index].id == card.id{
-                return index
+    var onlyFaceUpCard: Int? {
+        get{
+            var faceUpCardIndices: [Int]()
+            for index in cards.indices {
+                if cards[index].isFaceUp {
+                    faceUpCardIndices.append(index)
+                }
+            }
+            if faceUpCardIndices.count == 1 {
+                return faceUpCardIndices.first
+            } else {
+                return nil //TODO: Finish onlyFaceUpCard func and lecture 5
             }
         }
-        return -1
+        set{
+            
+        }
+    }
+    
+    
+    mutating func choose(_ card: Card) {
+        if let chosenIndex = cards.firstIndex(where: { $0.id == card.id}) {
+            if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched{
+                if let potentialMatch = onlyFaceUpCard{
+                    if cards[chosenIndex].content == cards[potentialMatch].content{
+                        cards[chosenIndex].isMatched = true
+                        cards[potentialMatch].isMatched = true
+                    }
+                    onlyFaceUpCard = nil
+                } else {
+                    for index in cards.indices {
+                        cards[index].isFaceUp = false
+                    }
+                    onlyFaceUpCard = chosenIndex
+                }
+                cards[chosenIndex].isFaceUp = true
+            }
+        }
     }
     
     mutating func shuffle(){
@@ -41,7 +66,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible{
-        var isFaceUp: Bool = true
+        var isFaceUp: Bool = false
         var isMatched: Bool = false
         let content: CardContent
         
