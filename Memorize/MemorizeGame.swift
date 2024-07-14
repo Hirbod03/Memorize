@@ -32,7 +32,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
                 return index
             }
         }
-        return 0 // FIXME: bogus!
+        return -1
     }
     
     mutating func shuffle(){
