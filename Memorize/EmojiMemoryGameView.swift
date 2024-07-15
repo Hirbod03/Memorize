@@ -43,13 +43,20 @@ struct EmojiMemoryGameView: View {
     
     var buttons: some View{
         HStack{
-            Button("Shuffle") {
+            Button(action: {
                 viewModel.shuffle()
-            }
-            .foregroundColor(.blue)
-            .imageScale(.large)
-            .font(.title)
+                     }, label: {
+                         Image(systemName: "shuffle.circle")
+                     })
+            Spacer()
+            Button(action: {
+                viewModel.newGame()
+                     }, label: {
+                         Image(systemName: "plus.circle")
+                     })
         }
+        .foregroundColor(.blue)
+        .font(.title)
     }
 }
 
