@@ -40,7 +40,7 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
         
-    @Published private var model = createMemoryGame(theme: defaultTheme, numOfPairs: 10)
+    @Published private var model = createMemoryGame(theme: emojisForSelectedTheme(choice: 69), numOfPairs: 10)
     
     var cards: Array<MemoryGame<String>.Card> {
         return model.cards
@@ -59,7 +59,5 @@ class EmojiMemoryGame: ObservableObject {
     func newGame() {
         model = EmojiMemoryGame.createMemoryGame(theme: EmojiMemoryGame.defaultTheme, numOfPairs: 10)
     }
-    
-    // TODO: Add theme selector
     
 }
