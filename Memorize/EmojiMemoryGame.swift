@@ -22,8 +22,6 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
     
-    // TODO: Add some sort of win/loss functionality
-    
     private static func createMemoryGame(emojiID: Int = 6, numOfPairs: Int = 10) -> MemoryGame<String>{
         let emojis : [String] = getEmojisArray(choice: emojiID)
         return MemoryGame(numberOfPairsOfCards: numOfPairs) { index in
@@ -55,6 +53,10 @@ class EmojiMemoryGame: ObservableObject {
     func newGame(emojiID: Int = Int.random(in: 0...6),_ pairCount: Int = 10) {
         model = EmojiMemoryGame.createMemoryGame(emojiID: emojiID, numOfPairs: pairCount)
         model.shuffle()
+    }
+    
+    func getScore() -> Int {
+        return model.getScore()
     }
     
 }

@@ -9,9 +9,11 @@ import Foundation
 
 struct MemoryGame<CardContent> where CardContent: Equatable{
     private(set) var cards: [Card]
+    private var score: Int
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent){
         cards = []
+        score = 0
         // add numberOfPairsOfCards x 2 cards
         for pairIndex in 0..<max(2, numberOfPairsOfCards) {
             let content: CardContent = cardContentFactory(pairIndex)
@@ -33,11 +35,13 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
                     if cards[chosenIndex].content == cards[potentialMatch].content{
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatch].isMatched = true
-                    }
+                        score += 1
+                    } // TODO: ELSE IF cards don't match && either card wasSeen before then score -= 1
                 } else {
                     onlyFaceUpCard = chosenIndex
                 }
                 cards[chosenIndex].isFaceUp = true
+                cards[chosenIndex].wasSeen = true
             }
         }
     }
@@ -46,11 +50,16 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
         cards.shuffle()
     }
     
+    func getScore() -> Int {
+        return score
+    }
+    
     
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible{
-        var isFaceUp: Bool = true
+        var isFaceUp: Bool = false
         var isMatched: Bool = false
+        var wasSeen: Bool = false
         let content: CardContent
         
         var id: String
