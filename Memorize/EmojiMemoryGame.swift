@@ -8,28 +8,24 @@
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
-    private static var defaultTheme = ["🍎","🍐","🍌","🍉","🥝","🥥","🍓","⚽️","🏈","🏀","🥎","⚾️","🦉","🐠","🐬","🐕"].shuffled()
-    private static let fruitTheme = ["🍎","🍐","🍌","🍉","🥝","🥥","🍓","🍇","🍊","🍋","🍒","🍍","🥭","🍑","🍈","🍏"].shuffled()
-    private static let sportsTheme = ["⚽️","🏈","🏀","🥎","⚾️","🎾","🏐","🏓","🏸","🥊","🥋","⛳️","🥌","🛹","🏒","🏑"].shuffled()
-    private static let animalTheme = ["🦉","🐠","🐬","🐕","🐈","🦁","🐯","🐅","🐆","🐴","🦄","🐘","🦏","🐇","🦜","🦘"].shuffled()
-    private static let weatherTheme = ["☀️","🌤","⛅️","🌥","🌦","🌧","⛈","🌩","🌨","❄️","🌬","💨","🌪","🌫","🌈","☁️"].shuffled()
-    private static let foodTheme = ["🍔","🍟","🌭","🍕","🥪","🌮","🌯","🍣","🍜","🍛","🍲","🍝","🍤","🍩","🍪","🍫"].shuffled()
-    private static let travelTheme = ["✈️","🚀","🚁","🚂","🚢","🚗","🚙","🚕","🚌","🚎","🏨","🏦","🏥","🏪","🕌","🏛"].shuffled()
     
-    
-    private static func emojisForSelectedTheme(choice: Int) -> [String]{
+    private static func selectTheme(choice: Int) -> [String]{
         switch choice{
-            case 0: return fruitTheme
-            case 1: return sportsTheme
-            case 2: return animalTheme
-            case 3: return weatherTheme
-            case 4: return foodTheme
-            case 5: return travelTheme
-            default: return defaultTheme
+            case 0: return (["🍎","🍐","🍌","🍉","🥝","🥥","🍓","🍇","🍊","🍋","🍒","🍍","🥭","🍑","🍈","🍏"].shuffled())
+            case 1: return (["⚽️","🏈","🏀","🥎","⚾️","🎾","🏐","🏓","🏸","🥊","🥋","⛳️","🥌","🛹","🏒","🏑"].shuffled())
+            case 2: return (["🦉","🐠","🐬","🐕","🐈","🦁","🐯","🐅","🐆","🐴","🦄","🐘","🦏","🐇","🦜","🦘"].shuffled())
+            case 3: return (["☀️","🌤","⛅️","🌥","🌦","🌧","⛈","🌩","🌨","❄️","🌬","💨","🌪","🌫","🌈","☁️"].shuffled())
+            case 4: return (["🍔","🍟","🌭","🍕","🥪","🌮","🌯","🍣","🍜","🍛","🍲","🍝","🍤","🍩","🍪","🍫"].shuffled())
+            case 5: return (["✈️","🚀","🚁","🚂","🚢","🚗","🚙","🚕","🚌","🚎","🏨","🏦","🏥","🏪","🕌","🏛"].shuffled())
+            case 6: return (["🍎","🍐","🍌","🍉","🥝","🥥","🍓","⚽️","🏈","🏀","🥎","⚾️","🦉","🐠","🐬","🐕"].shuffled())
+            default: return (["🍎","🍐","🍌","🍉","🥝","🥥","🍓","⚽️","🏈","🏀","🥎","⚾️","🦉","🐠","🐬","🐕"].shuffled())
         }
     }
     
-    private static func createMemoryGame(theme: [String], numOfPairs: Int) -> MemoryGame<String>{
+    // TODO: Add some sort of win/loss functionality
+    
+    private static func createMemoryGame(themeID: Int = 6, numOfPairs: Int = 10) -> MemoryGame<String>{
+        let theme : [String] = selectTheme(choice: themeID)
         return MemoryGame(numberOfPairsOfCards: numOfPairs) { index in
             if theme.indices.contains(index){
                 return theme[index]
@@ -40,7 +36,7 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
         
-    @Published private var model = createMemoryGame(theme: emojisForSelectedTheme(choice: 69), numOfPairs: 10)
+    @Published private var model = createMemoryGame()
     
     var cards: Array<MemoryGame<String>.Card> {
         return model.cards
@@ -56,8 +52,9 @@ class EmojiMemoryGame: ObservableObject {
         model.choose(card)
     }
     
-    func newGame() {
-        model = EmojiMemoryGame.createMemoryGame(theme: EmojiMemoryGame.defaultTheme, numOfPairs: 10)
+    func newGame(themeID: Int = Int.random(in: 0...6),_ pairCount: Int = 10) {
+        model = EmojiMemoryGame.createMemoryGame(themeID: themeID, numOfPairs: pairCount)
+        model.shuffle()
     }
     
 }

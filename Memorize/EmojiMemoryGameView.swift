@@ -48,6 +48,39 @@ struct EmojiMemoryGameView: View {
                 label: { Image(systemName: "shuffle.circle") }
             )
             Spacer()
+            // TODO: Make this less ugly
+            Menu {
+                Button(action: { viewModel.newGame(themeID: 6, 4) }) {
+                    Text("Default")
+                    Image(systemName: "face.smiling")
+                }
+                Button(action: { viewModel.newGame(themeID: 0, 6) }) {
+                    Text("Fruits")
+                    Image(systemName: "apple.logo")
+                }
+                Button(action: { viewModel.newGame(themeID: 1, 8) }) {
+                    Text("Sports")
+                    Image(systemName: "figure.tennis")
+                }
+                Button(action: { viewModel.newGame(themeID: 2, 10) }) {
+                    Text("Animals")
+                    Image(systemName: "dog")
+                }
+                Button(action: { viewModel.newGame(themeID: 4, 12) }) {
+                    Text("Food")
+                    Image(systemName: "fork.knife")
+                }
+                Button(action: { viewModel.newGame(themeID: 3, 14) }) {
+                    Text("Weather")
+                    Image(systemName: "cloud")
+                }
+                Button(action: { viewModel.newGame(themeID: 5, 16) }) {
+                    Text("Travel")
+                    Image(systemName: "airplane")
+                }
+            }
+            label: { Image(systemName: "paintpalette") }
+            Spacer()
             Button(
                 action: { viewModel.newGame() },
                 label: { Image(systemName: "plus.circle")}
