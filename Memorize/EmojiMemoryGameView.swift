@@ -7,6 +7,24 @@
 
 import SwiftUI
 
+struct Theme {
+    let emojiArrayID: Int
+    let name: String
+    let imageName: String
+    let pairs: Int
+}
+
+let themes = [
+    Theme(emojiArrayID: 6, name: "Default", imageName: "face.smiling", pairs: 4),
+    Theme(emojiArrayID: 0, name: "Fruits", imageName: "apple.logo", pairs: 6),
+    Theme(emojiArrayID: 1, name: "Sports", imageName: "figure.tennis", pairs: 8),
+    Theme(emojiArrayID: 2, name: "Animals", imageName: "dog", pairs: 10),
+    Theme(emojiArrayID: 4, name: "Food", imageName: "fork.knife", pairs: 12),
+    Theme(emojiArrayID: 3, name: "Weather", imageName: "cloud", pairs: 14),
+    Theme(emojiArrayID: 5, name: "Travel", imageName: "airplane", pairs: 16)
+]
+
+
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
         
@@ -48,41 +66,18 @@ struct EmojiMemoryGameView: View {
                 label: { Image(systemName: "shuffle.circle") }
             )
             Spacer()
-            // TODO: Make this less ugly
             Menu {
-                Button(action: { viewModel.newGame(themeID: 6, 4) }) {
-                    Text("Default")
-                    Image(systemName: "face.smiling")
-                }
-                Button(action: { viewModel.newGame(themeID: 0, 6) }) {
-                    Text("Fruits")
-                    Image(systemName: "apple.logo")
-                }
-                Button(action: { viewModel.newGame(themeID: 1, 8) }) {
-                    Text("Sports")
-                    Image(systemName: "figure.tennis")
-                }
-                Button(action: { viewModel.newGame(themeID: 2, 10) }) {
-                    Text("Animals")
-                    Image(systemName: "dog")
-                }
-                Button(action: { viewModel.newGame(themeID: 4, 12) }) {
-                    Text("Food")
-                    Image(systemName: "fork.knife")
-                }
-                Button(action: { viewModel.newGame(themeID: 3, 14) }) {
-                    Text("Weather")
-                    Image(systemName: "cloud")
-                }
-                Button(action: { viewModel.newGame(themeID: 5, 16) }) {
-                    Text("Travel")
-                    Image(systemName: "airplane")
+                ForEach(themes, id: \.emojiArrayID) { theme in
+                    Button(action: { viewModel.newGame(emojiID: theme.emojiArrayID, theme.pairs) }) {
+                        Text(theme.name)
+                        Image(systemName: theme.imageName)
+                    }
                 }
             }
             label: { Image(systemName: "paintpalette") }
             Spacer()
             Button(
-                action: { viewModel.newGame() },
+                action: { viewModel.newGame(Int.random(in:4...16)) },
                 label: { Image(systemName: "plus.circle")}
             )
         }
