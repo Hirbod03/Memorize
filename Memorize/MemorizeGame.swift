@@ -32,16 +32,27 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id}) {
             if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched{
                 if let potentialMatch = onlyFaceUpCard{
-                    if cards[chosenIndex].content == cards[potentialMatch].content{
+                    let match : Bool = cards[chosenIndex].content == cards[potentialMatch].content
+                    if match{
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatch].isMatched = true
-                        score += 1
-                    } // TODO: ELSE IF cards don't match && either card wasSeen before then score -= 1
+                        score += 2
+                    }
+                    if cards[chosenIndex].wasSeen && !match {
+                        score -= 1
+                    }
+                    if cards[potentialMatch].wasSeen && !match {
+                        score -= 1
+                    }
+                    if !match {
+                        cards[potentialMatch].wasSeen = true
+                        cards[chosenIndex].wasSeen = true
+                    }
+                    
                 } else {
                     onlyFaceUpCard = chosenIndex
                 }
                 cards[chosenIndex].isFaceUp = true
-                cards[chosenIndex].wasSeen = true
             }
         }
     }
